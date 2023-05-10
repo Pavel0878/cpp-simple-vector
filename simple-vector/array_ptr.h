@@ -24,13 +24,15 @@ public:
 
     // Запрещаем копирование
     ArrayPtr(const ArrayPtr&) = delete;
+    // Запрещаем присваивание
+    ArrayPtr& operator=(const ArrayPtr&) = delete;
+    //Лучше добавить move семантику в этот класс, чтобы он мог служить, как полноценный умный указатель.
+    ArrayPtr(ArrayPtr&&) = default;
+    ArrayPtr& operator=(ArrayPtr&&) = default;
 
     ~ArrayPtr() {
         delete[] raw_ptr_;
     }
-
-    // Запрещаем присваивание
-    ArrayPtr& operator=(const ArrayPtr&) = delete;
 
     // Прекращает владением массивом в памяти, возвращает значение адреса массива
     // После вызова метода указатель на массив должен обнулиться
@@ -63,9 +65,10 @@ public:
 
     // Обменивается значениям указателя на массив с объектом other
     void swap(ArrayPtr& other) noexcept {
-        Type* tmp = raw_ptr_;
-        raw_ptr_ = other.raw_ptr_;
-        other.raw_ptr_ = tmp;
+        std::swap(raw_ptr_,other.raw_ptr_);
+       // Type* tmp = raw_ptr_;
+       // raw_ptr_ = other.raw_ptr_;
+       // other.raw_ptr_ = tmp;
     }
 
 private:
