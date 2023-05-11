@@ -27,8 +27,17 @@ public:
     // Запрещаем присваивание
     ArrayPtr& operator=(const ArrayPtr&) = delete;
     //Лучше добавить move семантику в этот класс, чтобы он мог служить, как полноценный умный указатель.
-    ArrayPtr(ArrayPtr&&) = default;
-    ArrayPtr& operator=(ArrayPtr&&) = default;
+    //ArrayPtr(ArrayPtr&&) = default;
+    //ArrayPtr& operator=(ArrayPtr&&) = default;
+
+    ArrayPtr(ArrayPtr&& other) {
+        raw_ptr_ = std::exchange(other.raw_ptr_, nullptr);
+    };
+
+    ArrayPtr& operator=(ArrayPtr&& other) {
+        raw_ptr_ = std::exchange(other.raw_ptr_, nullptr);
+        return *this;
+    }
 
     ~ArrayPtr() {
         delete[] raw_ptr_;
