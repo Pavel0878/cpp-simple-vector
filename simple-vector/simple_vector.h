@@ -93,7 +93,8 @@ public:
     }
 
     SimpleVector& operator=(const SimpleVector& rhs) {
-        if (this->begin() != rhs.begin()) {
+        //SimpleVector* hs = &rhs;
+        if (this != &rhs) {
             SimpleVector tmp(rhs);
             swap(tmp);
         }
@@ -242,7 +243,7 @@ public:
 
     // Удаляет элемент вектора в указанной позиции
     Iterator Erase(ConstIterator pos) {
-        assert(pos>= begin() && pos <= end());
+        assert(pos>= begin() && pos < end());
         int64_t dist = std::distance(cbegin(), pos) ;
         std::move(begin()+dist + 1, end(), begin()+dist);
         --size_;
