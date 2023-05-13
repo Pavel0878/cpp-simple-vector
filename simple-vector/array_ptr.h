@@ -35,7 +35,10 @@ public:
     };
 
     ArrayPtr& operator=(ArrayPtr&& other) {
-        this = std::exchange(other.raw_ptr_, nullptr);
+        if (this == &other)
+            return *this;
+        delete raw_ptr_;
+        raw_ptr_ = std::exchange(other.raw_ptr_, nullptr);
         return *this;
     }
 
